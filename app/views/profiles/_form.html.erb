@@ -1,0 +1,516 @@
+<%= form_with(model: profile, class: "space-y-8", data: { controller: "profile-form" }) do |form| %>
+  <% if profile.errors.any? %>
+    <div class="bg-red-50 p-4 rounded-md mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc pl-5 space-y-1">
+              <% profile.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Profile Completion Progress -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-medium text-gray-900">Profile Completion</h2>
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium 
+                   <%= profile.profile_completion_percentage >= 80 ? 'bg-green-100 text-green-800' : 
+                      profile.profile_completion_percentage >= 50 ? 'bg-yellow-100 text-yellow-800' : 
+                      'bg-red-100 text-red-800' %>">
+        <%= profile.profile_completion_percentage %>%
+      </span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2.5">
+      <div class="h-2.5 rounded-full <%= profile.profile_completion_percentage >= 80 ? 'bg-green-500' : 
+                                        profile.profile_completion_percentage >= 50 ? 'bg-yellow-500' : 
+                                        'bg-red-500' %>" 
+           style="width: <%= profile.profile_completion_percentage %>%"></div>
+    </div>
+    <p class="mt-2 text-sm text-gray-500">
+      Complete your profile to increase visibility and credibility with brands and buyers.
+    </p>
+  </div>
+
+  <!-- Basic Information -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Basic Information</h3>
+      
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <%= form.label :username, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+              @
+            </span>
+            <%= form.text_field :username, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-teal-500 focus:border-teal-500 sm:text-sm border-gray-300" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            This is your unique identifier on the platform. 3-30 characters, only letters, numbers, dots, and underscores.
+          </p>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :display_name, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.text_field :display_name, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            Your public display name (max 50 characters).
+          </p>
+        </div>
+
+        <div class="sm:col-span-6">
+          <%= form.label :headline, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.text_field :headline, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            A brief tagline that describes what you do (max 100 characters).
+          </p>
+        </div>
+
+        <div class="sm:col-span-6">
+          <%= form.label :bio, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.text_area :bio, rows: 4, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            Tell viewers about yourself, your expertise, and what they can expect from your streams (max 1000 characters).
+          </p>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :location, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.text_field :location, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :birth_date, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.date_field :birth_date, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            This will not be public unless you choose to show it in privacy settings.
+          </p>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :gender, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.select :gender, ['Male', 'Female', 'Non-binary', 'Prefer not to say'], 
+                           { include_blank: 'Select gender (optional)' }, 
+                           { class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" } %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :preferred_language, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.select :preferred_language, 
+                           [['English', 'en'], ['Spanish', 'es'], ['French', 'fr'], ['German', 'de'], ['Japanese', 'ja'], ['Chinese', 'zh']], 
+                           {}, 
+                           { class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Information -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Contact Information</h3>
+      
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <%= form.label :website, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+              https://
+            </span>
+            <%= form.text_field :website, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-teal-500 focus:border-teal-500 sm:text-sm border-gray-300" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :contact_email, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.email_field :contact_email, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            This will only be visible if enabled in your privacy settings.
+          </p>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :public_phone, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.telephone_field :public_phone, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            This will only be visible if enabled in your privacy settings.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Media Links -->
+  <div class="bg-white rounded-lg shadow overflow-hidden" data-controller="social-links">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Social Media Links</h3>
+      
+      <div class="space-y-4">
+        <% Profile::EXPERTISE_CATEGORIES.each do |platform| %>
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-medium text-gray-700"><%= platform.capitalize %></label>
+            </div>
+            <div class="sm:col-span-4">
+              <%= form.text_field "social_links[#{platform.downcase}]", value: profile.social_links&.dig(platform.downcase), 
+                                 class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expertise & Skills -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Expertise & Skills</h3>
+      
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-6">
+          <fieldset>
+            <legend class="block text-sm font-medium text-gray-700 mb-2">Select your areas of expertise</legend>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <% Profile::EXPERTISE_CATEGORIES.each do |category| %>
+                <div class="relative flex items-start">
+                  <div class="flex items-center h-5">
+                    <%= check_box_tag "profile[expertise][]", category, profile.expertise&.include?(category), 
+                                     id: "profile_expertise_#{category.parameterize}", 
+                                     class: "focus:ring-teal-500 h-4 w-4 text-teal-600 border-gray-300 rounded" %>
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <%= label_tag "profile_expertise_#{category.parameterize}", category, class: "font-medium text-gray-700" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Images -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Profile Images</h3>
+      
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <label class="block text-sm font-medium text-gray-700">Profile Picture</label>
+          <div class="mt-1 flex items-center">
+            <% if profile.avatar.attached? %>
+              <div class="relative">
+                <%= image_tag profile.avatar, class: "h-24 w-24 rounded-full object-cover" %>
+                <button type="button" data-action="profile-form#removeAvatar" class="absolute -top-2 -right-2 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow-sm">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            <% else %>
+              <span class="h-24 w-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </span>
+            <% end %>
+            
+            <div class="ml-4">
+              <%= form.file_field :avatar, direct_upload: true, 
+                                class: "hidden", 
+                                data: { profile_form_target: "avatarInput", action: "change->profile-form#previewAvatar" } %>
+              <button type="button" data-action="profile-form#selectAvatarFile" class="bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                Change
+              </button>
+              <p class="mt-1 text-xs text-gray-500">JPG, PNG, GIF up to 2MB</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label class="block text-sm font-medium text-gray-700">Cover Photo</label>
+          <div class="mt-1">
+            <% if profile.cover_photo.attached? %>
+              <div class="relative">
+                <%= image_tag profile.cover_photo, class: "h-32 w-full object-cover rounded" %>
+                <button type="button" data-action="profile-form#removeCoverPhoto" class="absolute top-2 right-2 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow-sm">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            <% else %>
+              <div class="h-32 w-full bg-gray-100 flex items-center justify-center rounded">
+                <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+            <% end %>
+            
+            <div class="mt-2">
+              <%= form.file_field :cover_photo, direct_upload: true, 
+                                class: "hidden", 
+                                data: { profile_form_target: "coverInput", action: "change->profile-form#previewCoverPhoto" } %>
+              <button type="button" data-action="profile-form#selectCoverFile" class="bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                Change Cover Photo
+              </button>
+              <p class="mt-1 text-xs text-gray-500">Recommended dimension: 1200x300px. JPG, PNG up to 5MB</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Availability & Collaboration -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Availability & Collaboration</h3>
+      
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-6">
+          <div class="relative flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :open_for_collaboration, class: "focus:ring-teal-500 h-4 w-4 text-teal-600 border-gray-300 rounded" %>
+            </div>
+            <div class="ml-3 text-sm">
+              <%= form.label :open_for_collaboration, "Open for brand collaborations", class: "font-medium text-gray-700" %>
+              <p class="text-gray-500">This will allow brands to see that you're available for collaboration opportunities.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :min_collaboration_budget, "Minimum Collaboration Budget ($)", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.number_field :min_collaboration_budget, min: 0, step: 50, class: "shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+          <p class="mt-1 text-sm text-gray-500">
+            Optional: Set a minimum budget for brand collaborations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Settings -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Privacy Settings</h3>
+      
+      <div class="space-y-4">
+        <% privacy_settings = [
+          { field: "show_email", label: "Show contact email on profile" },
+          { field: "show_phone", label: "Show phone number on profile" },
+          { field: "show_location", label: "Show location on profile" },
+          { field: "show_birth_date", label: "Show birth date on profile" },
+          { field: "show_sales_metrics", label: "Show sales and performance metrics on profile" }
+        ] %>
+        
+        <% privacy_settings.each do |setting| %>
+          <div class="relative flex items-start">
+            <div class="flex items-center h-5">
+              <%= check_box_tag "profile[privacy_settings][#{setting[:field]}]", 1, profile.privacy_settings&.dig(setting[:field]), 
+                              class: "focus:ring-teal-500 h-4 w-4 text-teal-600 border-gray-300 rounded" %>
+            </div>
+            <div class="ml-3 text-sm">
+              <%= label_tag "profile[privacy_settings][#{setting[:field]}]", setting[:label], class: "font-medium text-gray-700" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Preferences -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Notification Preferences</h3>
+      
+      <div class="space-y-4">
+        <% notification_settings = [
+          { field: "email_marketing", label: "Receive promotional emails and platform updates" },
+          { field: "email_stream_notifications", label: "Receive emails about streams you follow" },
+          { field: "email_order_updates", label: "Receive emails about order status updates" },
+          { field: "push_messages", label: "Receive push notifications for new messages" },
+          { field: "push_stream_start", label: "Receive push notifications when creators you follow go live" }
+        ] %>
+        
+        <% notification_settings.each do |setting| %>
+          <div class="relative flex items-start">
+            <div class="flex items-center h-5">
+              <%= check_box_tag "profile[notification_preferences][#{setting[:field]}]", 1, profile.notification_preferences&.dig(setting[:field]), 
+                              class: "focus:ring-teal-500 h-4 w-4 text-teal-600 border-gray-300 rounded" %>
+            </div>
+            <div class="ml-3 text-sm">
+              <%= label_tag "profile[notification_preferences][#{setting[:field]}]", setting[:label], class: "font-medium text-gray-700" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="flex justify-end space-x-3">
+    <%= link_to "Cancel", profile_path(profile), class: "py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+    
+    <%= form.submit class: "py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+  </div>
+<% end %>
+
+<!-- Stimulus controller for form interactions -->
+<%= javascript_tag do %>
+  (() => {
+    application.register("profile-form", class extends Stimulus.Controller {
+      static targets = ["avatarInput", "coverInput"]
+      
+      selectAvatarFile() {
+        this.avatarInputTarget.click()
+      }
+      
+      selectCoverFile() {
+        this.coverInputTarget.click()
+      }
+      
+      previewAvatar(event) {
+        const input = event.target
+        const parent = input.closest(".flex.items-center")
+        
+        if (input.files && input.files[0]) {
+          const reader = new FileReader()
+          
+          reader.onload = function(e) {
+            const imgPreview = parent.querySelector("img")
+            if (imgPreview) {
+              imgPreview.src = e.target.result
+            } else {
+              const placeholder = parent.querySelector("span")
+              const img = document.createElement("img")
+              img.classList.add("h-24", "w-24", "rounded-full", "object-cover")
+              img.src = e.target.result
+              placeholder.replaceWith(img)
+            }
+          }
+          
+          reader.readAsDataURL(input.files[0])
+        }
+      }
+      
+      previewCoverPhoto(event) {
+        const input = event.target
+        const parent = input.closest(".mt-1")
+        
+        if (input.files && input.files[0]) {
+          const reader = new FileReader()
+          
+          reader.onload = function(e) {
+            const imgPreview = parent.querySelector("img")
+            if (imgPreview) {
+              imgPreview.src = e.target.result
+            } else {
+              const placeholder = parent.querySelector("div.bg-gray-100")
+              const img = document.createElement("img")
+              img.classList.add("h-32", "w-full", "object-cover", "rounded")
+              img.src = e.target.result
+              placeholder.replaceWith(img)
+            }
+          }
+          
+          reader.readAsDataURL(input.files[0])
+        }
+      }
+      
+      removeAvatar(event) {
+        event.preventDefault()
+        if (confirm("Are you sure you want to remove your profile picture?")) {
+          // Send AJAX request to remove avatar
+          fetch(`/profiles/<%= profile.username %>/remove_avatar`, {
+            method: 'DELETE',
+            headers: {
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+              'Accept': 'application/json'
+            }
+          }).then(response => {
+            if (response.ok) {
+              const parent = event.target.closest(".flex.items-center")
+              const imgContainer = event.target.closest(".relative")
+              
+              const placeholder = document.createElement("span")
+              placeholder.classList.add("h-24", "w-24", "rounded-full", "overflow-hidden", "bg-gray-100", "flex", "items-center", "justify-center")
+              placeholder.innerHTML = `
+                <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              `
+              
+              imgContainer.replaceWith(placeholder)
+            }
+          })
+        }
+      }
+      
+      removeCoverPhoto(event) {
+        event.preventDefault()
+        if (confirm("Are you sure you want to remove your cover photo?")) {
+          // Send AJAX request to remove cover photo
+          fetch(`/profiles/<%= profile.username %>/remove_cover`, {
+            method: 'DELETE',
+            headers: {
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+              'Accept': 'application/json'
+            }
+          }).then(response => {
+            if (response.ok) {
+              const parent = event.target.closest(".mt-1")
+              const imgContainer = event.target.closest(".relative")
+              
+              const placeholder = document.createElement("div")
+              placeholder.classList.add("h-32", "w-full", "bg-gray-100", "flex", "items-center", "justify-center", "rounded")
+              placeholder.innerHTML = `
+                <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              `
+              
+              imgContainer.replaceWith(placeholder)
+            }
+          })
+        }
+      }
+    })
+  })()
+<% end %>
